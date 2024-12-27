@@ -42,8 +42,14 @@ while True:
                 
         combined_frame = cv2.addWeighted(frame,0.5,canvas,0.9,3)
         cv2.imshow("Virtual Screen",combined_frame)
-        if cv2.waitKey(1) == ord('q'):
+        
+        key = cv2.waitKey(1)
+        
+        if key == ord('q'):
             break
+        
+        elif key == ord('c'):
+            canvas = np.zeros((h,w,3),dtype=np.uint8)
 
 cap.release()
 cv2.destroyAllWindows()
