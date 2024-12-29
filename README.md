@@ -9,7 +9,9 @@ Virtual Screen enables users to write on their screen using hand gestures tracke
 - **Boundary Constraint**: Ensures drawing is allowed only within a predefined rectangle.
 - **Customizable Canvas**: Clear the canvas using a key press (`c`).
 - **Live Feedback**: Displays the tracked finger position and boundary area.
-
+- **Color Palette**: Choose different colors for drawing.
+- **Brush Size Palette**: Adjust brush size for precise or bold strokes.
+- **Palm Erase**: Use your palm gesture to erase parts of the canvas.
 ---
 
 ## Technologies Used
@@ -49,20 +51,29 @@ python Virtual_Screen.py
 - Position your index finger within the boundary rectangle displayed on the screen.
 - Move your finger to draw lines on the virtual canvas.
 
-2. Clear Canvas:
+2. Select Color:
+
+Move your hand over the color palette area on the screen and tap with your index finger to select a color.
+
+3. Adjust Brush Size:
+
+Interact with the brush size palette to switch between various brush thicknesses.
+
+
+4. Clear Canvas:
 
 - Press the c key to clear the canvas.
 
-3. Exit:
+5. Exit:
 
 - Press the q key to quit the application.
 
 
 
 ## Future Enhancements
-- Add support for multiple colors and brush sizes.
 - Save the canvas as an image file.
 - Implement multi-finger gesture recognition for advanced controls.
+- Add undo/redo functionality for enhanced editing.
 
 
 ## License
