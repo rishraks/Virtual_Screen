@@ -21,6 +21,7 @@ alpha = 0.6
 canvas = None
 w,h = (800,600)
 brush_color = (255,255,255)
+brush_thickness = 3
 
 # Paint Area Boundary
 b_start = (50,50)
@@ -63,6 +64,12 @@ color_bbox=[{"color_centre":(200,25),"radius":22,"color":(0,0,255)},
             {"color_centre":(600,25),"radius":22,"color":(255,0,255)},  
             {"color_centre":(680,25),"radius":22,"color":(255,165,0)}]
 
+
+brush_thickness_box=[{"coord_center":(775,150),"radius":22,"thickness":3,"text":"3","text_coord":(766,159)},
+                     {"coord_center":(775,230),"radius":22,"thickness":5,"text":"5","text_coord":(766,239)},
+                     {"coord_center":(775,310),"radius":22,"thickness":8,"text":"8","text_coord":(766,319)},
+                     {"coord_center":(775,390),"radius":22,"thickness":10,"text":"10","text_coord":(755,399)}]
+
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -84,9 +91,18 @@ while True:
 
         cv2.rectangle(frame,b_start,b_end,(128, 128, 128),2)
         
+        # Drawing Color Pallet
         for box in color_bbox:
             cv2.circle(frame, box["color_centre"], box["radius"], box["color"],-1)
+            cv2.circle(frame,box["color_centre"],box["radius"]+2,(255,255,255),1)
+
+        # Drawing Brush Thickness Pallet 
+        for box in brush_thickness_box:
+            cv2.circle(frame,box["coord_center"],box["radius"],(0,0,0),-1)
+            cv2.circle(frame,box["coord_center"],box["radius"]+2,(255,255,255),1)
+            cv2.putText(frame,box["text"],box["text_coord"],cv2.FONT_HERSHEY_COMPLEX,1,(255,255,255),1)
         
+        # Hand Landmarks Detection
         if results.multi_hand_landmarks:
             for handlms,handedness in zip(results.multi_hand_landmarks,results.multi_handedness):
                 
@@ -137,10 +153,21 @@ while True:
                             brush_color = box["color"]
                             cv2.circle(frame, smooth_pos, 8, brush_color, -1)
                     
+                    
+                    for box in brush_thickness_box:
+                        region = box["coord_center"]
+                        radius = box["radius"]
+                        
+                        finger_pos = smooth_pos
+                        distance = math.sqrt((finger_pos[0]-region[0])**2+ (finger_pos[1]-region[1])**2)
+                        
+                        if distance <=radius:
+                            brush_thickness = box["thickness"]
+                    
                     # Condition to check if index finger is inside the painting region boundary
                     if b_start[0]<=smooth_pos[0]<=b_end[0] and b_start[1]<=smooth_pos[1]<=b_end[1]:
                         if index_new_pos != (0, 0) and abs(smooth_pos[0] - index_new_pos[0]) < 30 and abs(smooth_pos[1] - index_new_pos[1]) < 30:
-                            cv2.line(canvas,index_new_pos,smooth_pos,brush_color,3)
+                            cv2.line(canvas,index_new_pos,smooth_pos,brush_color,brush_thickness)
                         
                         index_new_pos = smooth_pos
         
